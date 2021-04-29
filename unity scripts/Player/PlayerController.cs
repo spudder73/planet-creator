@@ -79,14 +79,14 @@ public class PlayerController : MonoBehaviour
         float speed = 0.002f;
         transform.Translate(Input.GetAxisRaw("Horizontal") * speed, Input.GetAxisRaw("Vertical") * speed, 0);
 
-        
+        /*
         Vector3 grav = transform.position;
         float mult = grav.magnitude / 100;
         if (mult < 1)
         {
             rb.AddForce(grav * (-1f + mult) * 0.7f, ForceMode.Force);
         }
-        
+        */
 
     }
 }

@@ -13,7 +13,6 @@ public class drawOcean : MonoBehaviour
     {
         get = gameObject.GetComponent<noiseEditor>();
         colour1 = get.getColour1();
-
         //create texture object
         Texture2D texture = new Texture2D(((int)(gridSize - frequency - 1) / 4) + 2, ((int)(gridSize - frequency - 1) / 4) + 2);
 

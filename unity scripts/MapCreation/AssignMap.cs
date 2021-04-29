@@ -35,8 +35,6 @@ public class AssignMap : MonoBehaviour
     bool modify;
 
 
-
-
     //initialize maps
     float[,,] randVectMap;
     float[,,,] distanceVectMap;
@@ -76,7 +74,6 @@ public class AssignMap : MonoBehaviour
     createMesh get17;
 
 
-
     //initialize mesh modifiers
     Vector3 scale;
     Vector3 pos;
@@ -90,6 +87,7 @@ public class AssignMap : MonoBehaviour
         changeO = false;
         changeO2 = false;
         changeT = false;
+
         //set all getters
         get = gameObject.GetComponent<noiseEditor>();
         get2 = gameObject.GetComponent<MapSetup>();
@@ -101,7 +99,6 @@ public class AssignMap : MonoBehaviour
         get8 = gameObject.GetComponent<MeshGeneration>();
         get9 = gameObject.GetComponent<cubeCreation>();
         get10 = gameObject.GetComponent<falloff>();
-
 
 
         get17 = gameObject.GetComponent<createMesh>();
@@ -134,6 +131,7 @@ public class AssignMap : MonoBehaviour
             allFinalNoiseMaps = new float[6, (int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
             noiseMaps = new float[6, octaves, (int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
             //for loop for each octave
+
             for (int iv = 0; iv < 6; iv++)
             {
                 get.setFrequency(frequency2);
@@ -284,18 +282,15 @@ public class AssignMap : MonoBehaviour
 
         scaler = get.getScaler();
 
-        
-
-        get.setChangeO();
-        get.setChangeT();
-        get.setChangeO2();
-        get.setChangeS2();
 
         changeA = get.getChangeA();
         if (changeA == true)
         {
 
-            Debug.Log("hi");
+            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+
             changeH = get.getChangeH();
 
             if (changeH == true)
@@ -418,6 +413,7 @@ public class AssignMap : MonoBehaviour
                     }
 
                 }
+
                 for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
                 {
                     for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
@@ -441,9 +437,9 @@ public class AssignMap : MonoBehaviour
             scaler = get.getScaler();
 
 
-            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
 
-            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
 
 
             get.setChangeA();

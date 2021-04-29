@@ -138,6 +138,7 @@ public class noiseEditor : MonoBehaviour
             changeO = true;//forgot
 
         }
+        changeA = true;
     }
 
     public void changeMode()
@@ -252,6 +253,8 @@ public class noiseEditor : MonoBehaviour
         {
             changeO = true;
         }
+
+        changeA = true;
     }
 
     public bool getChangeT()
@@ -271,6 +274,7 @@ public class noiseEditor : MonoBehaviour
         {
             changeO = true;
         }
+        changeA = true;
     }
 
     public void changeBvalue()
@@ -287,6 +291,7 @@ public class noiseEditor : MonoBehaviour
         {
             changeO = true;
         }
+        changeA = true;
     }
 
     public void changeAvalue()
@@ -307,6 +312,7 @@ public class noiseEditor : MonoBehaviour
             colours[colourNo].a = aValue;
             changeO = true;
         }
+        changeA = true;
     }
 
 
@@ -322,6 +328,7 @@ public class noiseEditor : MonoBehaviour
         {
             changeO2 = true;
         }
+        changeA = true;
     }
 
     public bool getChangeO()
