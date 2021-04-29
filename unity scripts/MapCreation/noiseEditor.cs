@@ -43,6 +43,17 @@ public class noiseEditor : MonoBehaviour
     public chSliderVal get10;
     public cdModeVal get11;
 
+
+
+    bool changeM;
+    bool changeA;
+    bool changeO;
+    bool changeH;
+    bool changeS;
+    bool changeOH;
+    bool changeC;
+
+
     public rcSliderVal get12;
     public gcSliderVal get13;
     public bcSliderVal get14;
@@ -55,18 +66,11 @@ public class noiseEditor : MonoBehaviour
 
     public float detail;
     public int mode;
-    public bool changeA;
-    public bool changeH;
     public float scale;
-    public bool changeP;
-    public bool changeH1;
     public int colourNo;
     public int noOfColours;
     public float colourHeight;
-    public bool changeT;
     float a2Val;
-    public bool changeS2;
-    public bool changeO;
 
     Color[] colours;
 
@@ -76,10 +80,6 @@ public class noiseEditor : MonoBehaviour
     void Start()
     {
         a2Val = 0;
-        changeT = false;
-        changeS2 = false;
-        changeO = false;
-        changeO2 = false;
         heights = new float[5]; 
         colours = new Color[5];
         mode = 1;
@@ -93,7 +93,6 @@ public class noiseEditor : MonoBehaviour
         amplitude = 3f;
         detail = 0.5f;
         scale = 1f;
-        changeP = false;
         heights[0] = 1.12f;
         heights[1] = 0.9f;
         heights[2] = 0.6f;
@@ -124,6 +123,13 @@ public class noiseEditor : MonoBehaviour
         colours[4].b = 1;
         colours[4].a = 1;
 
+        changeM = false;
+        changeA = false;
+        changeO = false;
+        changeH = false;
+        changeS = false;
+        changeOH = false;
+        changeC = false;
     }
 
 
@@ -134,11 +140,7 @@ public class noiseEditor : MonoBehaviour
             colours[i].r = UnityEngine.Random.Range(0f, 1.0f);
             colours[i].g = UnityEngine.Random.Range(0f, 1.0f);
             colours[i].b = UnityEngine.Random.Range(0f, 1.0f);
-            changeT = true;
-            changeO = true;//forgot
-
         }
-        changeA = true;
     }
 
     public void changeMode()
@@ -151,9 +153,7 @@ public class noiseEditor : MonoBehaviour
         {
             mode = 1;
         }
-
-        apply = true;
-        changeH1 = true;
+        changeM = true;
     }
 
     public int getMode()
@@ -165,21 +165,271 @@ public class noiseEditor : MonoBehaviour
     {
         frequency = get.getFSliderVal();
         frequency2 = get.getFSliderVal();
-        apply = true;
+        changeM = true;
     }
 
     public void changeDetail()
     {
         detail = get6.getDSliderVal();
-        changeP = true;
-        changeA = true;
+        changeO = true;
     }
 
     public void changeScaler()
     {
         scale = get8.getSSliderVal();
-        changeS2 = true;
+        changeS = true;
     }
+
+    public void changeNoOfColour()
+    {
+        noOfColours = get9.getCSliderVal();
+    }
+
+    public void changeRvalue()
+    {
+        rValue = get12.getRcSliderVal();
+
+        colours[colourNo].r = rValue;
+
+
+        changeC = true;
+
+    }
+
+
+    public void changeGvalue()
+    {
+        gValue = get13.getGcSliderVal();
+        colours[colourNo].g = gValue;
+        changeC = true;
+
+    }
+
+    public void changeBvalue()
+    {
+
+        bValue = get14.getBcSliderVal();
+        colours[colourNo].b = bValue;
+        changeC = true;
+
+    }
+
+    public void changeAvalue()
+    {
+        aValue = get15.getAcSliderVal();
+        if (colourNo != 0)
+        {
+
+            colours[colourNo].a = aValue - a2Val;
+            colours[colourNo].b += aValue - a2Val;
+            colours[colourNo].g += aValue - a2Val;
+            colours[colourNo].r += aValue - a2Val;
+            a2Val = aValue;
+
+        }
+        else
+        {
+            colours[colourNo].a = aValue;
+
+        }
+        changeC = true;
+    }
+
+
+    public void changeColourHeight()
+    {
+        colourHeight = get10.getChSliderVal();
+        heights[colourNo] = colourHeight;
+        if (colourNo != 0)
+        {
+            changeOH = true;
+        }
+        else
+        {
+            changeC = true;
+        }
+
+    }
+
+
+    public void changeHeight()
+    {
+        height = get5.getHSliderVal();
+        changeH = true;
+    }
+
+
+    public void setFrequency(int frequency1)
+    {
+        frequency = frequency1;
+    }
+
+    public void setModify(bool val)
+    {
+        modify = val;
+    }
+
+    public void changeOctaves()
+    {
+        octaves = get4.getOSliderVal();
+        changeO = true;
+    }
+
+    public void changeColourNo()
+    {
+        colourNo = get11.getColour();
+    }
+
+    public void changeAmplitude()
+    {
+        amplitude = get2.getASliderVal();
+        changeA = true;
+    }
+
+
+    public void changeGridSize()
+    {
+        gridSize = get3.getGSliderVal();
+        frequency = frequency2;
+        changeM = true;
+    }
+
+    public void setOctaves(int octaves1)
+    {
+        octaves = octaves1;
+    }
+
+
+    public void setGridSize(int gridSize1)
+    {
+        gridSize = gridSize1;
+    }
+
+
+    public bool getChangeM()
+    {
+        return changeM;
+    }
+
+    public void setChangeM()
+    {
+        if (changeM)
+        {
+            changeM = false;
+        }
+        else
+        {
+            changeM = true;
+        }
+    }
+
+    public bool getChangeA()
+    {
+        return changeA;
+    }
+
+    public void setChangeA()
+    {
+        if (changeA)
+        {
+            changeA = false;
+        }
+        else
+        {
+            changeA = true;
+        }
+    }
+
+
+    public bool getChangeO()
+    {
+        return changeO;
+    }
+
+    public void setChangeO()
+    {
+        if (changeO)
+        {
+            changeO = false;
+        }
+        else
+        {
+            changeO = true;
+        }
+    }
+
+
+    public bool getChangeH()
+    {
+        return changeH;
+    }
+
+    public void setChangeH()
+    {
+        if (changeH)
+        {
+            changeH = false;
+        }
+        else
+        {
+            changeH = true;
+        }
+    }
+
+
+    public bool getChangeS()
+    {
+        return changeS;
+    }
+
+    public void setChangeS()
+    {
+        if (changeS)
+        {
+            changeS = false;
+        }
+        else
+        {
+            changeS = true;
+        }
+    }
+
+
+    public bool getChangeOH()
+    {
+        return changeOH;
+    }
+
+    public void setChangeOH()
+    {
+        if (changeOH)
+        {
+            changeOH = false;
+        }
+        else
+        {
+            changeOH = true;
+        }
+    }
+
+
+    public bool getChangeC()
+    {
+        return changeC;
+    }
+
+    public void setChangeC()
+    {
+        if (changeC)
+        {
+            changeC = false;
+        }
+        else
+        {
+            changeC = true;
+        }
+    }
+
 
 
 
@@ -234,149 +484,6 @@ public class noiseEditor : MonoBehaviour
     }
 
 
-    public void changeNoOfColour()
-    {
-        noOfColours = get9.getCSliderVal();
-    }
-
-    public void changeRvalue()
-    {
-        rValue = get12.getRcSliderVal();
-
-        colours[colourNo].r = rValue;
-
-        if (colourNo != 0)
-        {
-            changeT = true;
-        }
-        else
-        {
-            changeO = true;
-        }
-
-        changeA = true;
-    }
-
-    public bool getChangeT()
-    {
-        return changeT;
-    }
-
-    public void changeGvalue()
-    {
-        gValue = get13.getGcSliderVal();
-        colours[colourNo].g = gValue;
-        if (colourNo != 0)
-        {
-            changeT = true;
-        }
-        else
-        {
-            changeO = true;
-        }
-        changeA = true;
-    }
-
-    public void changeBvalue()
-    {
-
-        bValue = get14.getBcSliderVal();
-        colours[colourNo].b = bValue;
-
-        if (colourNo != 0)
-        {
-            changeT = true;
-        }
-        else
-        {
-            changeO = true;
-        }
-        changeA = true;
-    }
-
-    public void changeAvalue()
-    {
-        aValue = get15.getAcSliderVal();
-        if (colourNo != 0)
-        {
-            
-            colours[colourNo].a = aValue - a2Val;
-            colours[colourNo].b += aValue - a2Val;
-            colours[colourNo].g += aValue - a2Val;
-            colours[colourNo].r += aValue - a2Val;
-            a2Val = aValue;
-            changeT = true;
-        }
-        else
-        {
-            colours[colourNo].a = aValue;
-            changeO = true;
-        }
-        changeA = true;
-    }
-
-
-    public void changeColourHeight()
-    {
-        colourHeight = get10.getChSliderVal();
-        heights[colourNo] = colourHeight;
-        if (colourNo != 0)
-        {
-            changeT = true;
-        }
-        else
-        {
-            changeO2 = true;
-        }
-        changeA = true;
-    }
-
-    public bool getChangeO()
-    {
-        return changeO;
-    }
-
-    public void setChangeO()
-    {
-        if (changeO)
-        {
-            changeO = false;
-        }
-    }
-
-    public bool getChangeO2()
-    {
-        return changeO2;
-    }
-
-    public void setChangeO2()
-    {
-        if (changeO2)
-        {
-            changeO2 = false;
-        }
-    }
-
-    public bool getChangeS2()
-    {
-        return changeS2;
-    }
-
-    public void setChangeS2()
-    {
-        if (changeS2)
-        {
-            changeS2 = false;
-        }
-    }
-
-    public void changeHeight()
-    {
-        height = get5.getHSliderVal();
-        changeH = true;
-        changeA = true;
-    }
-
     public float getDetail()
     {
         return detail;
@@ -392,140 +499,7 @@ public class noiseEditor : MonoBehaviour
         return modify;
     }
 
-    public void setModify(bool val)
-    {
-        modify = val;
-    }
-
-    public void changeOctaves()
-    {
-        octaves = get4.getOSliderVal();
-        apply = true;
-        changeH1 = true;
-    }
-
-    public void changeColourNo()
-    {
-        colourNo = get11.getColour();
-    }
-
-    public void changeAmplitude()
-    {
-        amplitude = get2.getASliderVal();
-        changeA = true;
-    }
-
-
-    public void changeGridSize()
-    {
-        gridSize = get3.getGSliderVal();
-        frequency = frequency2;
-        apply = true;
-        changeH1 = true;
-    }
-
-    public bool getChangeA()
-    {
-        return changeA;
-    }
-
-    public bool getChangeH1()
-    {
-        return changeH1;
-    }
-
-    public bool getChangeP()
-    {
-        return changeP;
-    }
-
-    public bool getChangeH()
-    {
-        return changeH;
-    }
-
-
-    public bool getRidge()
-    {
-        return ridge;
-    }
-
-    public bool getBillow()
-    {
-        return billow;
-    }
-
-
-    public bool getApply()
-    {
-        return apply;
-    }
-
-    public void setApply()
-    {
-        if (apply == true)
-        {
-            apply = false;
-        }
-        else
-        {
-            apply = true;
-        }
-        changeH1 = true;
-    }
-
-    public void setChangeT()
-    {
-        if (changeT == true)
-        {
-            changeT = false;
-        }
-    }
-
-    public void setChangeP()
-    {
-        if (changeP == true)
-        {
-            changeP = false;
-        }
-        else
-        {
-            changeP = true;
-        }
-    }
-
-    public void setChangeH1()
-    {
-        if (changeH1 == true)
-        {
-            changeH1 = false;
-        }
-        else
-        {
-            changeH1 = true;
-        }
-    }
-
-    public void setChangeH()
-    {
-        if (changeH == true)
-        {
-            changeH = false;
-        }
-        else
-        {
-            changeH = true;
-        }
-    }
-
-
-
-
-
-
-
-
-    //get functions
+    
     public int getGridSize()
     {
         return gridSize;
@@ -563,29 +537,6 @@ public class noiseEditor : MonoBehaviour
         return waterLevel;
     }
 
-    public void setFrequency(int frequency1)
-    {
-        frequency = frequency1;
-    }
-    public void setChangeA()
-    {
-        if (changeA == true)
-        {
-            changeA = false;
-        }
-        else
-        {
-            changeA = true;
-        }
-    }
-    public void setOctaves(int octaves1)
-    {
-        octaves = octaves1;
-    }
-    public void setGridSize(int gridSize1)
-    {
-        gridSize = gridSize1;
-    }
 
 
 
