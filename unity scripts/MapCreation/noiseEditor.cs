@@ -44,10 +44,9 @@ public class noiseEditor : MonoBehaviour
     public cdModeVal get11;
 
 
-
+    bool changeP;
     bool changeM;
     bool changeA;
-    bool changeO;
     bool changeH;
     bool changeS;
     bool changeOH;
@@ -125,7 +124,7 @@ public class noiseEditor : MonoBehaviour
 
         changeM = false;
         changeA = false;
-        changeO = false;
+        changeP = false;
         changeH = false;
         changeS = false;
         changeOH = false;
@@ -171,7 +170,7 @@ public class noiseEditor : MonoBehaviour
     public void changeDetail()
     {
         detail = get6.getDSliderVal();
-        changeO = true;
+        changeP = true;
     }
 
     public void changeScaler()
@@ -272,7 +271,7 @@ public class noiseEditor : MonoBehaviour
     public void changeOctaves()
     {
         octaves = get4.getOSliderVal();
-        changeO = true;
+        changeP = true;
     }
 
     public void changeColourNo()
@@ -305,6 +304,10 @@ public class noiseEditor : MonoBehaviour
         gridSize = gridSize1;
     }
 
+    public bool getChangeP()
+    {
+        return changeP;
+    }
 
     public bool getChangeM()
     {
@@ -320,6 +323,18 @@ public class noiseEditor : MonoBehaviour
         else
         {
             changeM = true;
+        }
+    }
+    
+    public void setChangeP()
+    {
+        if (changeP)
+        {
+            changeP = false;
+        }
+        else
+        {
+            changeP = true;
         }
     }
 
@@ -341,22 +356,6 @@ public class noiseEditor : MonoBehaviour
     }
 
 
-    public bool getChangeO()
-    {
-        return changeO;
-    }
-
-    public void setChangeO()
-    {
-        if (changeO)
-        {
-            changeO = false;
-        }
-        else
-        {
-            changeO = true;
-        }
-    }
 
 
     public bool getChangeH()
