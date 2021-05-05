@@ -286,7 +286,10 @@ public class newAssignMap : MonoBehaviour
     {
         changeM = get.getChangeM();
         changeA = get.getChangeA();
+<<<<<<< HEAD
         scaler = get.getScaler();
+=======
+>>>>>>> 96151a31e02fd02fc5f35bba491ccf922c94ff84
         changeH = get.getChangeH();
         changeS = get.getChangeS();
         changeOH = get.getChangeOH();
@@ -371,14 +374,76 @@ public class newAssignMap : MonoBehaviour
             get.setChangeM();
         }
 
+<<<<<<< HEAD
+=======
+        
+        
+>>>>>>> 96151a31e02fd02fc5f35bba491ccf922c94ff84
         if (changeP)
         {
             octaves = get.getOctaves();
             fade = get.getDetail();
             counter = 0.7f;
             height1 = get.getHeight();
+<<<<<<< HEAD
 
             for (int iii = 0; iii < octaves; iii++)
+=======
+
+            for (int iii = 0; iii < octaves; iii++)
+            {
+                if (iii != 0)
+                {
+                    for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
+                    {
+                        for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
+                        {
+                            noiseMap1[i, ii] = noiseMap1[i, ii] + counter * noiseMaps[0, iii, i, ii];
+                            noiseMap2[i, ii] = noiseMap2[i, ii] + counter * noiseMaps[1, iii, i, ii];
+                            noiseMap3[i, ii] = noiseMap3[i, ii] + counter * noiseMaps[2, iii, i, ii];
+                            noiseMap4[i, ii] = noiseMap4[i, ii] + counter * noiseMaps[3, iii, i, ii];
+                            noiseMap5[i, ii] = noiseMap5[i, ii] + counter * noiseMaps[4, iii, i, ii];
+                            noiseMap6[i, ii] = noiseMap6[i, ii] + counter * noiseMaps[5, iii, i, ii];
+
+                        }
+                    }
+
+                }
+                //for first octave
+                else
+                {
+                    for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
+                    {
+                        for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
+                        {
+                            void addModifiers(float[,] map, int num)
+                            {
+                                map[i, ii] =  counter * noiseMaps[num, iii, i, ii];
+                                map[ii,iii] = map[ii,iii] + falloffMap[ii,iii];
+                                map[ii, iii] += height1;
+                            }
+
+                            addModifiers(noiseMap1, 0);
+                            addModifiers(noiseMap2, 1);
+                            addModifiers(noiseMap3, 2);
+                            addModifiers(noiseMap4, 3);
+                            addModifiers(noiseMap5, 4);
+                            addModifiers(noiseMap6, 5);
+                           
+                        }
+                    }
+                }
+
+
+                counter = counter * fade;
+            }
+
+
+
+            height2 = get.getHeight();
+            get.setChangeP();
+            if (!get.getChangeA())
+>>>>>>> 96151a31e02fd02fc5f35bba491ccf922c94ff84
             {
                 if (iii != 0)
                 {
@@ -426,6 +491,7 @@ public class newAssignMap : MonoBehaviour
 
                 counter = counter * fade;
             }
+<<<<<<< HEAD
 
 
 
@@ -435,6 +501,21 @@ public class newAssignMap : MonoBehaviour
 
             get.setChangeA();
 
+=======
+        }
+        
+        
+
+        if (changeA)
+        {
+            get17.createMeshes(gridSize1, frequency2, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.createOcean(gridSize1, frequency2, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get.setChangeA();
+            if (!get.setChangeH())
+            {
+                get.setChangeH();
+            }
+>>>>>>> 96151a31e02fd02fc5f35bba491ccf922c94ff84
         }
 
 
