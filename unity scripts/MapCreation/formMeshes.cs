@@ -30,10 +30,9 @@ public class formMeshes : MonoBehaviour
         //each vertice(depth*width(-1 because edges have no triangles)) * 3(for each vertice in a triangle) * 2(2 triangles per vertice)
         triangles = new int[6 * (height) * (height) * 2];
         //vertices = new Vector3[depth * width * 6 - 12 * height + 8];
-        vertices = new Vector3[depth * width *2];
-        uvs = new Vector2[(depth +2)* (width+2)];
-
-        heightMap = new float[depth * width * 2];
+        vertices = new Vector3[(depth + 2) * (width + 2) * 2];
+        uvs = new Vector2[(depth +2) * (width+2)];
+        heightMap = new float[(depth + 2) * (width + 2) * 2];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -68,11 +67,11 @@ public class formMeshes : MonoBehaviour
 
         }
 
-
+        vertCounter = 0;
 
         for (int iii = 0; iii < height + 2; iii++)
         {
-            for (int ii = 0; ii < depth + 2; ii++)
+            for (int ii = 0; ii < height + 2; ii++)
             {
                 if (side == "right")
                 {
@@ -102,7 +101,7 @@ public class formMeshes : MonoBehaviour
 
                 //set uv map size
                 uvs[vertCounter] = new Vector2((ii) / (float)width, iii / (float)depth);
-                heightMap[vertCounter] = ((float)amplitude / 10f) * ((depthCurve.Evaluate(noiseMap[ii, iii]) + 1) / 2f);
+                heightMap[vertCounter] = ((float)amplitude / 10f) * ((depthCurve.Evaluate(noiseMap[ii, iii]) + 1) / 2f) + (0.1f - ((float)amplitude / 10f));
                 //increment vertice counter
                 vertCounter++;
             }
@@ -110,7 +109,7 @@ public class formMeshes : MonoBehaviour
 
 
 
-        for (int i = 0; i < vertCounter; i++)
+        for (int i = 0; i < vertCounter+1; i++)
         {
             vertices[i] = (vertices[i]).normalized;
             //vertices[i] = (vertices[i] * (float)((depthCurve.Evaluate(noiseMap[ii, iii]) + 2) * 0.5f));
@@ -200,12 +199,12 @@ public class formMeshes : MonoBehaviour
         Mesh mesh1 = new Mesh();
 
 
-        triangles1 = new int[6 * (height) * (height) * 2];
+        triangles1 = new int[6 * (height) * (height)];
         //vertices = new Vector3[depth * width * 6 - 12 * height + 8];
-        vertices1 = new Vector3[depth * width * 2];
-        uvs1 = new Vector2[depth * width * 2];
+        vertices1 = new Vector3[(depth + 2) * (width + 2)];
+        uvs1 = new Vector2[(depth + 2) * (width + 2)];
 
-        heightMap = new float[depth * width * 2];
+        heightMap = new float[(depth + 2) * (width + 2)];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -249,23 +248,23 @@ public class formMeshes : MonoBehaviour
                 {
                     vertices1[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, 0 - depth / 2);
                 }
-                if (side == "left")
+                else if (side == "left")
                 {
                     vertices1[vertCounter] = new Vector3(height - depth / 2, iii - depth / 2, ii - depth / 2);
                 }
-                if (side == "front")
+                else if (side == "front")
                 {
                     vertices1[vertCounter] = new Vector3(0 - depth / 2, iii - depth / 2, ii - depth / 2);
                 }
-                if (side == "back")
+                else if (side == "back")
                 {
                     vertices1[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, height - depth / 2);
                 }
-                if (side == "top")
+                else if (side == "top")
                 {
                     vertices1[vertCounter] = new Vector3(ii - depth / 2, -depth / 2, iii - depth / 2);
                 }
-                if (side == "bottom")
+                else if (side == "bottom")
                 {
                     vertices1[vertCounter] = new Vector3(ii - depth / 2, height - depth / 2, iii - depth / 2);
                 }
@@ -277,14 +276,13 @@ public class formMeshes : MonoBehaviour
                 //increment vertice counter
                 vertCounter++;
             }
+            
         }
-
 
 
         for (int i = 0; i < vertCounter; i++)
         {
             vertices1[i] = (vertices1[i]).normalized;
-
         }
 
 

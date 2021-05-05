@@ -6,7 +6,7 @@ public class DotProduct : MonoBehaviour
 {
     //initialize variables
     noiseEditor get;
-    AssignMap get2;
+    newAssignMap get2;
     
 
     float[,,,] assignedVectMap;
@@ -31,7 +31,7 @@ public class DotProduct : MonoBehaviour
         
         //set getter variables
         get = gameObject.GetComponent<noiseEditor>();
-        get2 = gameObject.GetComponent<AssignMap>();
+        get2 = gameObject.GetComponent<newAssignMap>();
 
         //assign variables to the values in noise Editor class using public get methods
         gridSize = get.getGridSize();

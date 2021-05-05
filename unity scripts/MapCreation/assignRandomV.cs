@@ -7,7 +7,7 @@ public class assignRandomV : MonoBehaviour
 
     float[,,] randVectorMap;
     
-    AssignMap get2;
+    newAssignMap get2;
 
     private float[,,,] assignedVectMap;
     
@@ -20,7 +20,7 @@ public class assignRandomV : MonoBehaviour
         //set get as the noiseEditor class
         
         
-        get2 = gameObject.GetComponent<AssignMap>();
+        get2 = gameObject.GetComponent<newAssignMap>();
         randVectorMap = get2.getRandVectMap();
 
         assignedVectMap = new float[(int)((gridSize - frequency - 1) / 4f) + 2, (int)((gridSize - frequency - 1) / 4f) + 2, 4, 2];

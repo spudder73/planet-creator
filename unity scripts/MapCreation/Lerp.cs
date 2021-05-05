@@ -7,7 +7,7 @@ public class Lerp : MonoBehaviour
 {
 
     //initialize variables
-    AssignMap get2;
+    newAssignMap get2;
     float[,,,] distanceVectMap;
     float[,,] dotMap;
     float[,] noiseMap;
@@ -18,7 +18,7 @@ public class Lerp : MonoBehaviour
     {
 
         //set getter
-        get2 = gameObject.GetComponent<AssignMap>();
+        get2 = gameObject.GetComponent<newAssignMap>();
 
         //get variables from other class using getter
         distanceVectMap = get2.getDistanceVectMap();

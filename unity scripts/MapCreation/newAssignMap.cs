@@ -20,10 +20,9 @@ public class newAssignMap : MonoBehaviour
     float scaler;
     float height2;
 
-
+    bool changeP;
     bool changeM;
     bool changeA;
-    bool changeO;
     bool changeH;
     bool changeS;
     bool changeOH;
@@ -73,7 +72,7 @@ public class newAssignMap : MonoBehaviour
     falloff get10;
     int mode;
     createMesh get17;
-
+    bool check;
 
     //initialize mesh modifiers
     Vector3 scale;
@@ -85,7 +84,7 @@ public class newAssignMap : MonoBehaviour
 
     void Start()
     {
-
+        check = false;
         //set all getters
         get = gameObject.GetComponent<noiseEditor>();
         get2 = gameObject.GetComponent<MapSetup>();
@@ -188,7 +187,8 @@ public class newAssignMap : MonoBehaviour
 
 
                 }
-
+                /*
+                Debug.Log(frequency1);
                 falloffMap = new float[(int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
                 falloffMap = get10.createFalloffMap((int)((gridSize1 - frequency1 - 1) / 4f) + 2);
 
@@ -198,12 +198,12 @@ public class newAssignMap : MonoBehaviour
                     {
                         //Mathf.Clamp01
 
-                        finalNoiseMap[iii, ii] = (finalNoiseMap[iii, ii] + falloffMap[iii, ii]);
+                        finalNoiseMap[iii, ii] = (finalNoiseMap[iii, ii] + falloffMap[iii,ii]);
 
                     }
 
                 }
-
+                */
                 for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
                 {
                     for (int iii = 0; iii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; iii++)
@@ -216,12 +216,15 @@ public class newAssignMap : MonoBehaviour
                 }
 
             }
+
             get.setFrequency(frequency2);
             
         }
+        
 
         //create noise
         addOctaves();
+        frequency1 = get.getFrequency();
         noiseMap1 = new float[(int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
         noiseMap2 = new float[(int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
         noiseMap3 = new float[(int)((gridSize1 - frequency1 - 1) / 4f) + 2, (int)((gridSize1 - frequency1 - 1) / 4f) + 2];
@@ -283,11 +286,12 @@ public class newAssignMap : MonoBehaviour
     {
         changeM = get.getChangeM();
         changeA = get.getChangeA();
-        changeO = get.getChangeO();
+        scaler = get.getScaler();
         changeH = get.getChangeH();
         changeS = get.getChangeS();
         changeOH = get.getChangeOH();
         changeC = get.getChangeC();
+        changeP = get.getChangeP();
 
         gridSize1 = get.getGridSize();
         amplitude1 = get.getAmplitude();
@@ -301,23 +305,36 @@ public class newAssignMap : MonoBehaviour
         fade = get.getDetail();
         counter = 0.7f;
 
+
+        if (changeA)
+        {
+            frequency1 = (int)(frequency2 * (Mathf.Pow(2, octaves-1))); // fixed big borders
+            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
+            get.setChangeS();
+            changeS = get.getChangeS();
+            get.setChangeA();
+
+
+        }
+
         if (changeS)
         {
             get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
             get.setChangeS();
         }
 
         if (changeH)
         {
-
             for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
             {
                 for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
                 {
                     void changeHeight(float[,] map)
                     {
-                        map[i, ii] -= height2;
-                        map[i, ii] += height1;
+                        map[ii, i] += (height1 - height2);
                     }
                     changeHeight(noiseMap1);
                     changeHeight(noiseMap2);
@@ -329,8 +346,9 @@ public class newAssignMap : MonoBehaviour
                 }
             }
 
-            height2 = get.getHeight();
+            height2 = height1;
             get.setChangeH();
+            get.setChangeA();
         }
 
         if (changeOH)
@@ -344,37 +362,82 @@ public class newAssignMap : MonoBehaviour
             get17.addMaterials(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
             get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
 
-            get.setChangeOH();
+            get.setChangeC();
         }
 
         if (changeM)
         {
             recreateNoise();
             get.setChangeM();
-            if (!get.getChangeA())
-            {
-                get.setChangeA();
-            }
         }
 
-        if (changeO)
+        if (changeP)
         {
-            recreateNoise();
-            get.setChangeO();
+            octaves = get.getOctaves();
+            fade = get.getDetail();
+            counter = 0.7f;
+            height1 = get.getHeight();
 
-            if (!get.getChangeA())
+            for (int iii = 0; iii < octaves; iii++)
             {
-                get.setChangeA();
+                if (iii != 0)
+                {
+                    for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
+                    {
+                        for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
+                        {
+                            noiseMap1[i, ii] = noiseMap1[i, ii] + counter * noiseMaps[0, iii, i, ii];
+                            noiseMap2[i, ii] = noiseMap2[i, ii] + counter * noiseMaps[1, iii, i, ii];
+                            noiseMap3[i, ii] = noiseMap3[i, ii] + counter * noiseMaps[2, iii, i, ii];
+                            noiseMap4[i, ii] = noiseMap4[i, ii] + counter * noiseMaps[3, iii, i, ii];
+                            noiseMap5[i, ii] = noiseMap5[i, ii] + counter * noiseMaps[4, iii, i, ii];
+                            noiseMap6[i, ii] = noiseMap6[i, ii] + counter * noiseMaps[5, iii, i, ii];
+
+                        }
+                    }
+
+                }
+
+                //for first octave
+                else
+                {
+                    for (int i = 0; i < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; i++)
+                    {
+                        for (int ii = 0; ii < (int)((gridSize1 - frequency1 - 1) / 4f) + 2; ii++)
+                        {
+                            void addModifiers(float[,] map, int num)
+                            {
+                                map[ii, i] = counter * noiseMaps[num, iii, ii, i];
+                                map[ii, i] += height1;
+                            }
+
+                            addModifiers(noiseMap1, 0);
+                            addModifiers(noiseMap2, 1);
+                            addModifiers(noiseMap3, 2);
+                            addModifiers(noiseMap4, 3);
+                            addModifiers(noiseMap5, 4);
+                            addModifiers(noiseMap6, 5);
+
+                        }
+                    }
+                }
+
+
+
+                counter = counter * fade;
             }
 
-        }
 
 
-        if (changeA)
-        {
-            get17.createMeshes(gridSize1, frequency2, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+
+            height2 = height1;
+            get.setChangeP();
+
             get.setChangeA();
+
         }
+
+
     }
 
 }

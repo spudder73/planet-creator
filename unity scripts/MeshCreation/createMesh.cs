@@ -8,22 +8,21 @@ public class createMesh : MonoBehaviour
     formMeshes get14;
     drawMap get6;
     drawOcean get7;
-    Mesh mesh;
-    Mesh mesh2;
-    Mesh mesh3;
-    Mesh mesh4;
-    Mesh mesh5;
-    Mesh mesh6;
+    public Mesh mesh;
+    public Mesh mesh2;
+    public Mesh mesh3;
+    public Mesh mesh4;
+    public Mesh mesh5;
+    public Mesh mesh6;
     bool check;
     bool check1;
-    Mesh mesh7;
-
-    Mesh mesh12;
-    Mesh mesh13;
-    Mesh mesh14;
-    Mesh mesh15;
-    Mesh mesh16;
-    Mesh mesh17;
+    public Mesh mesh7;
+    public Mesh mesh12;
+    public Mesh mesh13;
+    public Mesh mesh14;
+    public Mesh mesh15;
+    public Mesh mesh16;
+    public Mesh mesh17;
 
     Texture2D texture1;
     Texture2D texture2;
@@ -74,32 +73,17 @@ public class createMesh : MonoBehaviour
         get6 = gameObject.GetComponent<drawMap>();
         get14 = gameObject.GetComponent<formMeshes>();
 
-        gameObject2 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject3 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject4 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject5 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject6 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject7 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject12 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject13 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject14 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject15 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject16 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-        gameObject17 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
-
-        gameObject2.gameObject.tag = "Planet";
-
-        string ScriptName = "move2";
-        System.Type MyScriptType = System.Type.GetType(ScriptName + ",Assembly-CSharp");
-        gameObject2.AddComponent(MyScriptType);
 
     }
 
 
     public void createMeshes(int gridSize, int frequency, float[,] noiseMap11, float[,] noiseMap12, float[,] noiseMap13, float[,] noiseMap14, float[,] noiseMap15, float[,] noiseMap16, float amplitude, AnimationCurve meshHeightCurve, float scaler1, bool scale)
     {
+
         if (scale)
         {
+            scaler1 = get.getScaler();
+
             void resize(GameObject obj)
             {
                 obj.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
@@ -116,26 +100,40 @@ public class createMesh : MonoBehaviour
 
         else
         {
-
-           
-
-            void meshSide(Mesh mesh1, float[,] map, string side, GameObject obj, MeshCollider colObj)
+            //has to be before assignment
+            if (check1 == true)
             {
-                if (check == true)
-                {
-                    obj.GetComponent<MeshFilter>().mesh.Clear();
-                }
+                gameObject2.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject3.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject4.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject5.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject6.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject7.GetComponent<MeshFilter>().mesh.Clear();
+            }
 
-                obj.layer = 8;
+            //doesnt work in start
+            gameObject2 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject3 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject4 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject5 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject6 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject7 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+
+
+            scaler1 = get.getScaler(); // forgot to add so nothing appeared
+
+            void meshSide(Mesh mesh, float[,] map, string side, GameObject obj, MeshCollider colObj)
+            {
+                
+
 
                 //call mesh creator function on the noise map created
-                mesh1 = (Mesh)get14.createPlanet(gridSize, frequency, map, amplitude, meshHeightCurve, side);
+                mesh = get14.createPlanet(gridSize, frequency, map, amplitude, meshHeightCurve, side);
                 //mesh = get8.assignMesh(gridSize, frequency, finalnoiseMap1, amplitude, meshHeightCurve);
                 //create mesh from data created
-                obj.GetComponent<MeshFilter>().mesh = mesh1;
+                obj.GetComponent<MeshFilter>().mesh = mesh;
 
                 //modify mesh
-
                 //(int)((gridSize - frequency - 1) / 4f)
 
                 obj.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
@@ -144,7 +142,7 @@ public class createMesh : MonoBehaviour
                 obj.transform.position = new Vector3(0, 0, 0);
 
                 colObj = obj.AddComponent<MeshCollider>(); // Add the rigidbody.
-                colObj.sharedMesh = mesh1;
+                colObj.sharedMesh = mesh;
             }
 
             meshSide(mesh2, noiseMap11, "top", gameObject2, gameObjectsMeshCollider1);
@@ -154,7 +152,7 @@ public class createMesh : MonoBehaviour
             meshSide(mesh6, noiseMap15, "front", gameObject6, gameObjectsMeshCollider5);
             meshSide(mesh7, noiseMap16, "back", gameObject7, gameObjectsMeshCollider6);
 
-            check = true;
+            check1 = true;
 
             addMaterials(gridSize, frequency, noiseMap11, noiseMap12, noiseMap13, noiseMap14, noiseMap15, noiseMap16, amplitude, meshHeightCurve, scaler1);
         }
@@ -174,21 +172,21 @@ public class createMesh : MonoBehaviour
             texture = get6.draw(gridSize, frequency, map, meshHeightCurve);
 
             //set no wrap
-            texture.wrapMode = TextureWrapMode.Clamp;
+            //texture.wrapMode = TextureWrapMode.Clamp;
             //apply texture to mesh and render texture
             obj.GetComponent<Renderer>().material = mat;
             obj.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
         }
 
         //get blank material
-        Material material1 = Resources.Load("mat", typeof(Material)) as Material;
+        Material material = Resources.Load("mat", typeof(Material)) as Material;
 
-        texSide(material1, texture1, gameObject2, noiseMap11);
-        texSide(material1, texture2, gameObject3, noiseMap12);
-        texSide(material1, texture3, gameObject4, noiseMap13);
-        texSide(material1, texture4, gameObject5, noiseMap14);
-        texSide(material1, texture5, gameObject6, noiseMap15);
-        texSide(material1, texture6, gameObject7, noiseMap16);
+        texSide(material, texture1, gameObject2, noiseMap11);
+        texSide(material, texture2, gameObject3, noiseMap12);
+        texSide(material, texture3, gameObject4, noiseMap13);
+        texSide(material, texture4, gameObject5, noiseMap14);
+        texSide(material, texture5, gameObject6, noiseMap15);
+        texSide(material, texture6, gameObject7, noiseMap16);
 
     }
 
@@ -199,11 +197,12 @@ public class createMesh : MonoBehaviour
     public void createOcean(int gridSize, int frequency, float[,] noiseMap11, float[,] noiseMap12, float[,] noiseMap13, float[,] noiseMap14, float[,] noiseMap15, float[,] noiseMap16, float amplitude, AnimationCurve meshHeightCurve, float scaler1, bool scale)
     {
 
-        //hade get scale here
-        
+        //had get scale here
+
+
         if (scale)
         {
-            scaler1 *= get.getH1() * 1.5f;
+            scaler1 = get.getH1() * 1.5f;
 
             void resize(GameObject obj)
             {
@@ -221,14 +220,29 @@ public class createMesh : MonoBehaviour
 
         else
         {
+
+            if (check == true)
+            {
+                gameObject12.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject13.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject14.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject15.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject16.GetComponent<MeshFilter>().mesh.Clear();
+                gameObject17.GetComponent<MeshFilter>().mesh.Clear();
+            }
+
+            gameObject12 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject13 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject14 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject15 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject16 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+            gameObject17 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
+
+            scaler1 = get.getH1() * 1.5f;
+
+
             void oceanSide(Mesh mesh1, float[,] map, string side, GameObject obj)
             {
-                if (check == true)
-                {
-                    obj.GetComponent<MeshFilter>().mesh.Clear();
-                }
-
-                obj.layer = 8;
 
                 //call mesh creator function on the noise map created
                 mesh1 = (Mesh)get14.createOcean(gridSize, frequency, map, amplitude, meshHeightCurve, side);
@@ -259,8 +273,6 @@ public class createMesh : MonoBehaviour
             check = true;
 
             //didnt work in start
-
-            addOceanMaterial(gridSize, frequency, noiseMap11, noiseMap12, noiseMap13, noiseMap14, noiseMap15, noiseMap16, amplitude, meshHeightCurve, scaler1);
         }
     }
 
@@ -278,7 +290,7 @@ public class createMesh : MonoBehaviour
             texture = (Texture2D)get7.draw(gridSize, frequency, map, meshHeightCurve);
 
             //set no wrap
-            texture.wrapMode = TextureWrapMode.Clamp;
+            //texture.wrapMode = TextureWrapMode.Clamp;
             //apply texture to mesh and render texture
             obj.GetComponent<Renderer>().material = mat;
             obj.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
@@ -289,8 +301,8 @@ public class createMesh : MonoBehaviour
 
         texOcean(material1, texture11, gameObject12, noiseMap11, "top");
         texOcean(material1, texture12, gameObject13, noiseMap12, "bottom");
-        texOcean(material1, texture13, gameObject14, noiseMap13, "left");
-        texOcean(material1, texture14, gameObject15, noiseMap14, "right");
+        texOcean(material1, texture13, gameObject14, noiseMap14, "left");
+        texOcean(material1, texture14, gameObject15, noiseMap13, "right");
         texOcean(material1, texture15, gameObject16, noiseMap15, "front");
         texOcean(material1, texture16, gameObject17, noiseMap16, "back");
 

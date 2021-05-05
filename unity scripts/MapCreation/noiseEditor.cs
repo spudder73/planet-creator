@@ -44,7 +44,7 @@ public class noiseEditor : MonoBehaviour
     public cdModeVal get11;
 
 
-
+    bool changeP;
     bool changeM;
     bool changeA;
     bool changeO;
@@ -80,20 +80,20 @@ public class noiseEditor : MonoBehaviour
     void Start()
     {
         a2Val = 0;
-        heights = new float[5]; 
+        heights = new float[5];
         colours = new Color[5];
         mode = 1;
         modify = false;
         apply = false;
         height = 0f;
-        gridSize = 400;
+        gridSize = 300;
         frequency = 2;
         frequency2 = 2;
         octaves = 5;
         amplitude = 3f;
         detail = 0.5f;
         scale = 1f;
-        heights[0] = 1.12f;
+        heights[0] = 1.25f;
         heights[1] = 0.9f;
         heights[2] = 0.6f;
         heights[3] = 0.2f;
@@ -123,6 +123,7 @@ public class noiseEditor : MonoBehaviour
         colours[4].b = 1;
         colours[4].a = 1;
 
+        changeP = false;
         changeM = false;
         changeA = false;
         changeO = false;
@@ -141,6 +142,7 @@ public class noiseEditor : MonoBehaviour
             colours[i].g = UnityEngine.Random.Range(0f, 1.0f);
             colours[i].b = UnityEngine.Random.Range(0f, 1.0f);
         }
+        changeC = true;
     }
 
     public void changeMode()
@@ -153,6 +155,11 @@ public class noiseEditor : MonoBehaviour
         {
             mode = 1;
         }
+        changeM = true;
+    }
+
+    public void newSeed()
+    {
         changeM = true;
     }
 
@@ -171,12 +178,14 @@ public class noiseEditor : MonoBehaviour
     public void changeDetail()
     {
         detail = get6.getDSliderVal();
-        changeO = true;
+        changeP = true;
     }
 
     public void changeScaler()
     {
+        float scale2 = scale;
         scale = get8.getSSliderVal();
+        heights[0] *= (scale / scale2);
         changeS = true;
     }
 
@@ -240,7 +249,7 @@ public class noiseEditor : MonoBehaviour
     {
         colourHeight = get10.getChSliderVal();
         heights[colourNo] = colourHeight;
-        if (colourNo != 0)
+        if (colourNo == 0)
         {
             changeOH = true;
         }
@@ -272,7 +281,7 @@ public class noiseEditor : MonoBehaviour
     public void changeOctaves()
     {
         octaves = get4.getOSliderVal();
-        changeO = true;
+        changeP = true;
     }
 
     public void changeColourNo()
@@ -323,6 +332,23 @@ public class noiseEditor : MonoBehaviour
         }
     }
 
+    public bool getChangeP()
+    {
+        return changeP;
+    }
+
+    public void setChangeP()
+    {
+        if (changeP)
+        {
+            changeP = false;
+        }
+        else
+        {
+            changeP = true;
+        }
+    }
+
     public bool getChangeA()
     {
         return changeA;
@@ -337,24 +363,6 @@ public class noiseEditor : MonoBehaviour
         else
         {
             changeA = true;
-        }
-    }
-
-
-    public bool getChangeO()
-    {
-        return changeO;
-    }
-
-    public void setChangeO()
-    {
-        if (changeO)
-        {
-            changeO = false;
-        }
-        else
-        {
-            changeO = true;
         }
     }
 
@@ -499,7 +507,7 @@ public class noiseEditor : MonoBehaviour
         return modify;
     }
 
-    
+
     public int getGridSize()
     {
         return gridSize;
@@ -544,6 +552,6 @@ public class noiseEditor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }
