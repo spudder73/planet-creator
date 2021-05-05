@@ -47,6 +47,7 @@ public class noiseEditor : MonoBehaviour
     bool changeP;
     bool changeM;
     bool changeA;
+    bool changeO;
     bool changeH;
     bool changeS;
     bool changeOH;
@@ -125,7 +126,7 @@ public class noiseEditor : MonoBehaviour
         changeP = false;
         changeM = false;
         changeA = false;
-        changeP = false;
+        changeO = false;
         changeH = false;
         changeS = false;
         changeOH = false;
@@ -313,10 +314,6 @@ public class noiseEditor : MonoBehaviour
         gridSize = gridSize1;
     }
 
-    public bool getChangeP()
-    {
-        return changeP;
-    }
 
     public bool getChangeM()
     {
@@ -334,18 +331,6 @@ public class noiseEditor : MonoBehaviour
             changeM = true;
         }
     }
-    
-    public void setChangeP()
-    {
-        if (changeP)
-        {
-            changeP = false;
-        }
-        else
-        {
-            changeP = true;
-        }
-    }
 
     public bool getChangeP()
     {
@@ -364,7 +349,6 @@ public class noiseEditor : MonoBehaviour
         }
     }
 
-<<<<<<< HEAD
     public bool getChangeA()
     {
         return changeA;
@@ -381,9 +365,6 @@ public class noiseEditor : MonoBehaviour
             changeA = true;
         }
     }
-=======
-
->>>>>>> 96151a31e02fd02fc5f35bba491ccf922c94ff84
 
 
     public bool getChangeH()
