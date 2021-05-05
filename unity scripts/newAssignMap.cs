@@ -306,25 +306,37 @@ public class newAssignMap : MonoBehaviour
         counter = 0.7f;
 
 
-        if (changeA)
-        {
-            frequency1 = (int)(frequency2 * (Mathf.Pow(2, octaves-1))); // fixed big borders
-            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
-            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
-            get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
-            get.setChangeS();
-            changeS = get.getChangeS();
-            get.setChangeA();
-
-
-        }
-
         if (changeS)
         {
             get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
             get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
             get.setChangeS();
         }
+
+
+        if (changeOH)
+        {
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
+            get.setChangeOH();
+        }
+
+        if (changeC)
+        {
+            get17.addMaterials(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
+            get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
+
+            get.setChangeC();
+        }
+
+        if (changeM)
+        {
+            recreateNoise();
+            get.setChangeM();
+            height2 = 0;
+            get.setChangeH();
+            changeH = true;
+        }
+
 
         if (changeH)
         {
@@ -348,27 +360,12 @@ public class newAssignMap : MonoBehaviour
 
             height2 = height1;
             get.setChangeH();
-            get.setChangeA();
-        }
 
-        if (changeOH)
-        {
-            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, true);
-            get.setChangeOH();
-        }
-
-        if (changeC)
-        {
-            get17.addMaterials(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
-            get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
-
-            get.setChangeC();
-        }
-
-        if (changeM)
-        {
-            recreateNoise();
-            get.setChangeM();
+            if (!changeA)
+            { 
+                get.setChangeA();
+            }
+            changeA = true;
         }
 
         if (changeP)
@@ -434,6 +431,19 @@ public class newAssignMap : MonoBehaviour
             get.setChangeP();
 
             get.setChangeA();
+
+        }
+
+        if (changeA)
+        {
+            frequency1 = (int)(frequency2 * (Mathf.Pow(2, octaves - 1))); // fixed big borders
+            get17.createMeshes(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.createOcean(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler, false);
+            get17.addOceanMaterial(gridSize1, frequency1, noiseMap1, noiseMap2, noiseMap3, noiseMap4, noiseMap5, noiseMap6, amplitude1, meshHeightCurve, scaler);
+            get.setChangeS();
+            changeS = get.getChangeS();
+            get.setChangeA();
+
 
         }
 
