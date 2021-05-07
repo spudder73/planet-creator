@@ -5,18 +5,10 @@ using UnityEngine;
 public class formMeshes : MonoBehaviour
 {
 
-    public Mesh createPlanet(int gridSize, int frequency, float[,] noiseMap, float amplitude, AnimationCurve depthCurve, string side)
+    public Mesh createPlanet(int length, float[,] map, float amplitude, AnimationCurve heightCurve, int[,] startingPos)
     {
         
         float[] heightMap;
-        //get the mesh size
-        int depth = gridSize - frequency - 1;
-        depth = (int)(depth / 4f);
-        int width = gridSize - frequency - 1;
-        width = (int)(width / 4f);
-        int height = gridSize - frequency - 1;
-        height = (int)(height / 4f);
-        //assign variables needed for mesh creation
         int[] triangles;
         Vector3[] vertices;
         int vertCounter = 0;
@@ -26,13 +18,10 @@ public class formMeshes : MonoBehaviour
         Vector2[] uvsFlat;
         Mesh mesh = new Mesh();
 
-        //set size of arrays
-        //each vertice(depth*width(-1 because edges have no triangles)) * 3(for each vertice in a triangle) * 2(2 triangles per vertice)
-        triangles = new int[6 * (height) * (height) * 2];
-        //vertices = new Vector3[depth * width * 6 - 12 * height + 8];
-        vertices = new Vector3[(depth + 2) * (width + 2) * 2];
-        uvs = new Vector2[(depth +2) * (width+2)];
-        heightMap = new float[(depth + 2) * (width + 2) * 2];
+        triangles = new int[6 * (length) * (length) * 2 * 6];
+        vertices = new Vector3[(length + 2) * (length + 2) * 2 * 6];
+        uvs = new Vector2[(length +2) * (length+2) * 6];
+        heightMap = new float[(length + 2) * (length + 2) * 2 * 6];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -69,41 +58,22 @@ public class formMeshes : MonoBehaviour
 
         vertCounter = 0;
 
-        for (int iii = 0; iii < height + 2; iii++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int ii = 0; ii < height + 2; ii++)
+            int x = startingPos[i, 0];
+            int y = startingPos[i, 1];
+
+            for (int ii = x; ii < x + length + 2; ii++)
             {
-                if (side == "right")
+                for (int iii = y; iii < y + length + 2; iii++)
                 {
-                    vertices[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, 0 - depth / 2);
-                }
-                if (side == "left")
-                {
-                    vertices[vertCounter] = new Vector3(height - depth / 2, iii - depth / 2, ii - depth / 2);
-                }
-                if (side == "front")
-                {
-                    vertices[vertCounter] = new Vector3(0 - depth / 2, iii - depth / 2, ii - depth / 2);
-                }
-                if (side == "back")
-                {
-                    vertices[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, height - depth / 2);
-                }
-                if (side == "top")
-                {
-                    vertices[vertCounter] = new Vector3(ii - depth / 2, - depth / 2, iii - depth / 2);
-                }
-                if (side == "bottom")
-                {
-                    vertices[vertCounter] = new Vector3(ii - depth / 2, height - depth / 2, iii - depth / 2);
-                }
+                    vertices[vertCounter] = new Vector3(ii, length, iii);
 
+                    uvs[vertCounter] = new Vector2((ii) / (float)length, iii / (float)length);
+                    heightMap[vertCounter] = ((float)amplitude / 10f) * ((heightCurve.Evaluate(map[ii, iii]) + 1) / 2f) + (0.1f - ((float)amplitude / 10f));
 
-                //set uv map size
-                uvs[vertCounter] = new Vector2((ii) / (float)width, iii / (float)depth);
-                heightMap[vertCounter] = ((float)amplitude / 10f) * ((depthCurve.Evaluate(noiseMap[ii, iii]) + 1) / 2f) + (0.1f - ((float)amplitude / 10f));
-                //increment vertice counter
-                vertCounter++;
+                    vertCounter++;
+                }
             }
         }
 
@@ -111,9 +81,8 @@ public class formMeshes : MonoBehaviour
 
         for (int i = 0; i < vertCounter+1; i++)
         {
-            vertices[i] = (vertices[i]).normalized;
-            //vertices[i] = (vertices[i] * (float)((depthCurve.Evaluate(noiseMap[ii, iii]) + 2) * 0.5f));
-            vertices[i] = vertices[i] * ((float)(2f - (float)(heightMap[i])));
+            //vertices[i] = (vertices[i]).normalized;
+            //vertices[i] = vertices[i] * ((float)(2f - (float)(heightMap[i])));
 
         }
 
@@ -123,24 +92,21 @@ public class formMeshes : MonoBehaviour
 
         int vertCounter2 = 0;
 
-        for (int i = 0; i < height + 2; i++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int ii = 0; ii < (width) + 2; ii++)
+            int x = startingPos[i, 0];
+            int y = startingPos[i, 1];
+
+            for (int ii = x; ii < x + length + 2; ii++)
             {
-                if (i < height  & ii < width ) // ? +2
+                for (int iii = y; iii < y + length + 2; iii++)
                 {
-                    if (side == "front" || side == "back" || side == "top")
+                    if (ii < x + length & iii < y + length) // ? +2
                     {
-                        createQuad2(vertCounter2, vertCounter2 + width + 2, vertCounter2 + width + 3, vertCounter2 + 1);
+                        createQuad2(vertCounter2, vertCounter2 + length + 2, vertCounter2 + length + 3, vertCounter2 + 1);
                     }
-                    else
-                    {
-                        createQuad(vertCounter2, vertCounter2 + width + 2, vertCounter2 + width + 3, vertCounter2 + 1);
-
-                    }
-
+                    vertCounter2++;
                 }
-                vertCounter2++;
             }
 
         }
@@ -164,32 +130,22 @@ public class formMeshes : MonoBehaviour
 
         flatShade();
 
-        //increase the allowed mesh vertice limit
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
-        //set the meshes triangles verticies and uvs to the ones created
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.uv = uvs;
 
-        //calculate the mesh normals properly
         mesh.RecalculateNormals();
 
         return mesh;
     }
 
 
-    public Mesh createOcean(int gridSize, int frequency, float[,] noiseMap, float amplitude, AnimationCurve depthCurve, string side)
+    public Mesh createOcean(int length, float[,] map, float amplitude, AnimationCurve heightCurve, int[,] startingPos)
     {
 
         float[] heightMap;
-        //get the mesh size
-        int depth = gridSize - frequency - 1;
-        depth = (int)(depth / 4f);
-        int width = gridSize - frequency - 1;
-        width = (int)(width / 4f);
-        int height = gridSize - frequency - 1;
-        height = (int)(height / 4f);
         int[] triangles1;
         Vector3[] vertices1;
         int vertCounter = 0;
@@ -199,12 +155,11 @@ public class formMeshes : MonoBehaviour
         Mesh mesh1 = new Mesh();
 
 
-        triangles1 = new int[6 * (height) * (height)];
-        //vertices = new Vector3[depth * width * 6 - 12 * height + 8];
-        vertices1 = new Vector3[(depth + 2) * (width + 2)];
-        uvs1 = new Vector2[(depth + 2) * (width + 2)];
+        triangles1 = new int[6 * (length) * (length)];
+        vertices1 = new Vector3[(length + 2) * (length + 2)];
+        uvs1 = new Vector2[(length + 2) * (length + 2)];
 
-        heightMap = new float[(depth + 2) * (width + 2)];
+        heightMap = new float[(length + 2) * (length + 2)];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -240,41 +195,22 @@ public class formMeshes : MonoBehaviour
 
 
 
-        for (int iii = 0; iii < height + 2; iii++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int ii = 0; ii < depth + 2; ii++)
+            int x = startingPos[i, 0];
+            int y = startingPos[i, 1];
+
+            for (int ii = x; ii < x + length + 2; ii++)
             {
-                if (side == "right")
+                for (int iii = y; iii < y + length + 2; iii++)
                 {
-                    vertices1[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, 0 - depth / 2);
-                }
-                else if (side == "left")
-                {
-                    vertices1[vertCounter] = new Vector3(height - depth / 2, iii - depth / 2, ii - depth / 2);
-                }
-                else if (side == "front")
-                {
-                    vertices1[vertCounter] = new Vector3(0 - depth / 2, iii - depth / 2, ii - depth / 2);
-                }
-                else if (side == "back")
-                {
-                    vertices1[vertCounter] = new Vector3(ii - depth / 2, iii - depth / 2, height - depth / 2);
-                }
-                else if (side == "top")
-                {
-                    vertices1[vertCounter] = new Vector3(ii - depth / 2, -depth / 2, iii - depth / 2);
-                }
-                else if (side == "bottom")
-                {
-                    vertices1[vertCounter] = new Vector3(ii - depth / 2, height - depth / 2, iii - depth / 2);
-                }
+                    vertices1[vertCounter] = new Vector3(ii, length, iii);
 
+                    uvs1[vertCounter] = new Vector2((ii) / (float)length, iii / (float)length);
+                    heightMap[vertCounter] = ((float)amplitude / 10f) * ((heightCurve.Evaluate(map[ii, iii]) + 1) / 2f);
 
-                //set uv map size
-                uvs1[vertCounter] = new Vector2((ii) / (float)width, iii / (float)depth);
-                heightMap[vertCounter] = ((float)amplitude / 10f) * ((depthCurve.Evaluate(noiseMap[ii, iii]) + 1) / 2f);
-                //increment vertice counter
-                vertCounter++;
+                    vertCounter++;
+                }
             }
             
         }
@@ -282,7 +218,7 @@ public class formMeshes : MonoBehaviour
 
         for (int i = 0; i < vertCounter; i++)
         {
-            vertices1[i] = (vertices1[i]).normalized;
+            //vertices1[i] = (vertices1[i]).normalized;
         }
 
 
@@ -291,37 +227,31 @@ public class formMeshes : MonoBehaviour
 
         int vertCounter2 = 0;
 
-        for (int i = 0; i < height + 2; i++)
+        for (int i = 0; i < 6; i++)
         {
-            for (int ii = 0; ii < (width) + 2; ii++)
+            int x = startingPos[i, 0];
+            int y = startingPos[i, 1];
+
+            for (int ii = x; ii < x + length + 2; ii++)
             {
-                if (i < height & ii < width) // ? +2
+                for (int iii = y; iii < y + length + 2; iii++)
                 {
-                    if (side == "front" || side == "back" || side == "top")
+                    if (ii < x + length & iii < y + length) // ? +2
                     {
-                        createQuad2(vertCounter2, vertCounter2 + width + 2, vertCounter2 + width + 3, vertCounter2 + 1);
+                        createQuad2(vertCounter2, vertCounter2 + length + 2, vertCounter2 + length + 3, vertCounter2 + 1);
                     }
-                    else
-                    {
-                        createQuad(vertCounter2, vertCounter2 + width + 2, vertCounter2 + width + 3, vertCounter2 + 1);
-
-                    }
-
+                    vertCounter2++;
                 }
-                vertCounter2++;
             }
 
         }
 
-
         mesh1.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
-        //set the meshes triangles verticies and uvs to the ones created
         mesh1.vertices = vertices1;
         mesh1.triangles = triangles1;
         mesh1.uv = uvs1;
 
-        //calculate the mesh normals properly
         mesh1.RecalculateNormals();
 
         return mesh1;

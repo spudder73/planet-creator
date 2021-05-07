@@ -65,7 +65,7 @@ public class noiseEditor : MonoBehaviour
     public float aValue;
 
     public float detail;
-    public int mode;
+    public bool mode;
     public float scale;
     public int colourNo;
     public int noOfColours;
@@ -82,14 +82,14 @@ public class noiseEditor : MonoBehaviour
         a2Val = 0;
         heights = new float[5];
         colours = new Color[5];
-        mode = 1;
+        mode = true;
         modify = false;
         apply = false;
         height = 0f;
-        gridSize = 300;
+        gridSize = 10;
         frequency = 2;
         frequency2 = 2;
-        octaves = 5;
+        octaves = 1;
         amplitude = 3f;
         detail = 0.5f;
         scale = 1f;
@@ -147,13 +147,13 @@ public class noiseEditor : MonoBehaviour
 
     public void changeMode()
     {
-        if (mode == 1)
+        if (mode)
         {
-            mode = 0;
+            mode = false;
         }
         else
         {
-            mode = 1;
+            mode = true;
         }
         changeM = true;
     }
@@ -163,7 +163,7 @@ public class noiseEditor : MonoBehaviour
         changeM = true;
     }
 
-    public int getMode()
+    public bool getMode()
     {
         return mode;
     }
