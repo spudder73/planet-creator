@@ -5,14 +5,14 @@ using UnityEngine;
 public class newAssignMap : MonoBehaviour
 {
 
-    public noiseEditor get;
-    public createMap1 get2;
-    public createMap2 get3;
-    public createMap3 get4;
-    public createMap4 get5;
-    public createMap5 get6;
-    public drawMap get7;
-    public createMesh get8;
+    public noiseEditor noiseEditor;
+    public createMap1 createMap1;
+    public createMap2 createMap2;
+    public createMap3 createMap3;
+    public createMap4 createMap4;
+    public createMap5 createMap5;
+    public drawMap drawMap;
+    public createMesh createMesh;
     
     public int grid;
     public float amplitude;
@@ -51,23 +51,23 @@ public class newAssignMap : MonoBehaviour
     void Start()
     {
 
-        get = gameObject.GetComponent<noiseEditor>();
-        get2 = gameObject.GetComponent<createMap1>();
-        get3 = gameObject.GetComponent<createMap2>();
-        get4 = gameObject.GetComponent<createMap3>();
-        get5 = gameObject.GetComponent<createMap4>();
-        get6 = gameObject.GetComponent<createMap5>();
-        get7 = gameObject.GetComponent<drawMap>();
-        get8 = gameObject.GetComponent<createMesh>();
+        noiseEditor = gameObject.GetComponent<noiseEditor>();
+        createMap1 = gameObject.GetComponent<createMap1>();
+        createMap2 = gameObject.GetComponent<createMap2>();
+        createMap3 = gameObject.GetComponent<createMap3>();
+        createMap4 = gameObject.GetComponent<createMap4>();
+        createMap5 = gameObject.GetComponent<createMap5>();
+        drawMap = gameObject.GetComponent<drawMap>();
+        createMesh = gameObject.GetComponent<createMesh>();
 
-        grid = get.getGridSize();
-        amplitude = get.getAmplitude();
-        octaves = get.getOctaves();
-        freq = get.getFrequency();
+        grid = noiseEditor.getGridSize();
+        amplitude = noiseEditor.getAmplitude();
+        octaves = noiseEditor.getOctaves();
+        freq = noiseEditor.getFrequency();
         frequency2 = freq;
-        mode = get.getMode();
-        height = get.getHeight();
-        persistance = get.getDetail();
+        mode = noiseEditor.getMode();
+        height = noiseEditor.getHeight();
+        persistance = noiseEditor.getPersistance();
         startVal = 0.7f;
         height2 = 0;
 
@@ -98,14 +98,14 @@ public class newAssignMap : MonoBehaviour
     {
 
         //get noise modifiers
-        grid = get.getGridSize();
-        amplitude = get.getAmplitude();
-        octaves = get.getOctaves();
-        freq = get.getFrequency();
+        grid = noiseEditor.getGridSize();
+        amplitude = noiseEditor.getAmplitude();
+        octaves = noiseEditor.getOctaves();
+        freq = noiseEditor.getFrequency();
         frequency2 = freq;
-        mode = get.getMode();
-        height = get.getHeight();
-        persistance = get.getDetail();
+        mode = noiseEditor.getMode();
+        height = noiseEditor.getHeight();
+        persistance = noiseEditor.getPersistance();
         startVal = 0.7f;
 
 
@@ -113,18 +113,18 @@ public class newAssignMap : MonoBehaviour
         void addOctaves()
         {
 
-            get.setFrequency(frequency2);
+            noiseEditor.setFrequency(frequency2);
 
 
             for (int i = 0; i < octaves; i++)
             {
-                freq = get.getFrequency();
+                freq = noiseEditor.getFrequency();
 
-                map1 = get2.addPoints(length, dist, startingPos);
-                map2 = get3.setDistances(length, dist, startingPos);
-                map3 = get4.getRandVectors(length, dist, map1, startingPos);
-                map4 = get5.dotProduct(length, dist, map2, map3, startingPos);
-                map5 = get6.lerp(length, dist, i, mode, height, map2, map4, startingPos);
+                map1 = createMap1.addPoints(length, dist, startingPos);
+                map2 = createMap2.setDistances(length, dist, startingPos);
+                map3 = createMap3.getRandVectors(length, dist, map1, startingPos);
+                map4 = createMap4.dotProduct(length, dist, map2, map3, startingPos);
+                map5 = createMap5.lerp(length, dist, i, mode, height, map2, map4, startingPos);
 
 
 
@@ -159,187 +159,132 @@ public class newAssignMap : MonoBehaviour
                 startVal *= persistance;
 
                 //change level of detail
-                get.setFrequency(freq * 2);
+                noiseEditor.setFrequency(freq * 2);
 
 
             }
 
 
-            get.setFrequency(frequency2);
+            noiseEditor.setFrequency(frequency2);
             
         }
         
 
         //create noise
         addOctaves();
-        freq = get.getFrequency();
+        freq = noiseEditor.getFrequency();
 
-        if (!get.getChangeA())
-        {
-            get.setChangeA();
-        }
+        changeA(length, amplitude, scale);
 
     }
 
-
-    // Update is called once per frame
-    void Update()
+    public void changeOH(int length1, float amplitude1, float scale1)
     {
-        bool changeP = get.getChangeP();
-        bool changeM = get.getChangeM();
-        bool changeA = get.getChangeA();
-        bool changeH = get.getChangeH();
-        bool changeS = get.getChangeS();
-        bool changeOH = get.getChangeOH();
-        bool changeC = get.getChangeC();
+        createMesh.createOcean(length1, finalMap, amplitude1, meshHeightCurve, scale1, true, startingPos);
+    }
 
-        scale =  get.getScaler();
-        grid = get.getGridSize();
-        amplitude = get.getAmplitude();
-        octaves = get.getOctaves();
-        freq = get.getFrequency();
-        frequency2 = freq;
-        mode = get.getMode();
-        height = get.getHeight();
-        persistance = get.getDetail();
-        startVal = 0.7f;
+    public void changeC(int length1, float amplitude1, float scale1)
+    {
+        createMesh.addMaterials(length1, finalMap, amplitude1, meshHeightCurve, scale1, startingPos);
+        createMesh.addOceanMaterial(length1, finalMap, amplitude1, meshHeightCurve, scale1, startingPos);
+    }
+
+    public void changeM(float height1, int length1, float amplitude1, float scale1)
+    {
+        recreateNoise();
+        height2 = 0;
+        changeH(height1, length1, amplitude1, scale1);
+    }
 
 
-
-
-        if (changeOH)
+    public void changeH(float height1, int length1, float amplitude1, float scale1)
+    {
+        for (int i = 0; i < 6; i++)
         {
-            get8.createOcean(length, finalMap, amplitude, meshHeightCurve, scale, true, startingPos);
+            int x = startingPos[i, 0];
+            int y = startingPos[i, 1];
 
-            get.setChangeOH();
-        }
-
-        if (changeC)
-        {
-            get8.addMaterials(length, finalMap, amplitude, meshHeightCurve, scale, startingPos);
-            get8.addOceanMaterial(length, finalMap, amplitude, meshHeightCurve, scale, startingPos);
-
-            get.setChangeC();
-        }
-
-        if (changeM)
-        {
-            recreateNoise();
-
-            height2 = 0;
-            get.setChangeH();
-            changeH = true;
-
-            get.setChangeM();
-        }
-
-
-        if (changeH)
-        {
-            for (int i = 0; i < 6; i++)
+            for (int ii = x; ii < x + length1; ii++)
             {
-                int x = startingPos[i, 0];
-                int y = startingPos[i, 1];
-
-                for (int ii = x; ii < x + length; ii++)
+                for (int iii = y; iii < y + length1; iii++)
                 {
-                    for (int iii = y; iii < y + length; iii++)
-                    {
-                        finalMap[ii, iii] += (height - height2);
-                    }
+                    finalMap[ii, iii] += (height1 - height2);
                 }
             }
-
-            height2 = height;
-
-            if (!changeA)
-            {
-                get.setChangeA();
-                changeA = true;
-            }
-
-            get.setChangeH();
         }
 
-        if (changeP)
+        height2 = height1;
+        changeA(length1, scale1, amplitude1);
+    }
+
+    public void changeP(float height1, int octaves1, int length1, float persistance1, float amplitude1, float scale1)
+    {
+        for (int i = 0; i < octaves1; i++)
         {
-            for (int i = 0; i < octaves; i++)
+            if (i != 0)
             {
-                if (i != 0)
+                for (int iv = 0; iv < 6; iv++)
                 {
-                    for (int iv = 0; iv < 6; iv++)
+                    int x = startingPos[iv, 0];
+                    int y = startingPos[iv, 1];
+
+                    for (int ii = x; ii < x + length1; ii++)
                     {
-                        int x = startingPos[iv, 0];
-                        int y = startingPos[iv, 1];
-
-                        for (int ii = x; ii < x + length; ii++)
+                        for (int iii = y; iii < y + length1; iii++)
                         {
-                            for (int iii = y; iii < y + length; iii++)
-                            {
-                                finalMap[ii, iii] = finalMap[ii, iii] + startVal * mapOctaves[i, ii, iii];
-                            }
-                        }
-                    }
-
-                }
-
-                //for first octave
-                else
-                {
-                    for (int iv = 0; iv < 6; iv++)
-                    {
-                        int x = startingPos[iv, 0];
-                        int y = startingPos[iv, 1];
-
-                        for (int ii = x; ii < x + length; ii++)
-                        {
-                            for (int iii = y; iii < y + length; iii++)
-                            {
-                                finalMap[ii, iii] = startVal * mapOctaves[i, ii, i];
-                                finalMap[ii, iii] += height;
-                            }
+                            finalMap[ii, iii] = finalMap[ii, iii] + startVal * mapOctaves[i, ii, iii];
                         }
                     }
                 }
 
+            }
 
+            //for first octave
+            else
+            {
+                for (int iv = 0; iv < 6; iv++)
+                {
+                    int x = startingPos[iv, 0];
+                    int y = startingPos[iv, 1];
 
-                startVal = startVal * persistance;
+                    for (int ii = x; ii < x + length1; ii++)
+                    {
+                        for (int iii = y; iii < y + length1; iii++)
+                        {
+                            finalMap[ii, iii] = startVal * mapOctaves[i, ii, i];
+                            finalMap[ii, iii] += height1;
+                        }
+                    }
+                }
             }
 
 
 
-
-            height2 = height;
-            get.setChangeA();
-
-            get.setChangeP();
-
+            startVal = startVal * persistance1;
         }
 
-        if (changeA)
-        {
-            freq = freq3; // fixed big borders
 
-            get8.createMeshes(length, finalMap, amplitude, meshHeightCurve, scale, false, startingPos);
-            get8.createOcean(length, finalMap, amplitude, meshHeightCurve, scale, false, startingPos);
-            get8.addOceanMaterial(length, finalMap, amplitude, meshHeightCurve, scale, startingPos);
+        height2 = height1;
 
-            get.setChangeS();
-            changeS = get.getChangeS();
+        changeA(length1, amplitude1, scale1);
 
-            get.setChangeA();
+    }
 
-        }
+    public void changeA(int length1, float amplitude1, float scale1)
+    {
+        freq = freq3; // fixed big borders
 
-        if (changeS)
-        {
-            get8.createMeshes(length, finalMap, amplitude, meshHeightCurve, scale, true, startingPos);
-            get8.createOcean(length, finalMap, amplitude, meshHeightCurve, scale, true, startingPos);
+        createMesh.createMeshes(length1, finalMap, amplitude1, meshHeightCurve, scale1, false, startingPos);
+        createMesh.createOcean(length1, finalMap, amplitude1, meshHeightCurve, scale1, false, startingPos);
+        createMesh.addOceanMaterial(length1, finalMap, amplitude1, meshHeightCurve, scale1, startingPos);
 
-            get.setChangeS();
-        }
+    }
 
+    public void changeS(int length1, float amplitude1, float scale1)
+    {
+        createMesh.createMeshes(length1, finalMap, amplitude1, meshHeightCurve, scale1, true, startingPos);
+        createMesh.createOcean(length1, finalMap, amplitude1, meshHeightCurve, scale1, true, startingPos);
+        
     }
 
 }
