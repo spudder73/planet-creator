@@ -13,7 +13,7 @@ public class drawOcean : MonoBehaviour
     {
         get = gameObject.GetComponent<noiseEditor>();
         colour1 = get.getColour1();
-        Texture2D texture = new Texture2D(length, length);
+        Texture2D texture = new Texture2D(length * 4, length * 3);
 
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.mainTexture = texture;
@@ -25,9 +25,9 @@ public class drawOcean : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length ; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length ; iii++)
                 {
 
                     if (map[ii, iii] < 1.1f)

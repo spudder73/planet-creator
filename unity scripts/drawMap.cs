@@ -34,7 +34,7 @@ public class drawMap : MonoBehaviour
         colour4 = get.getColour4();
         colour5 = get.getColour5();
 
-        Texture2D texture = new Texture2D(length, length);
+        Texture2D texture = new Texture2D(length * 4, length * 3);
 
         texture.filterMode = FilterMode.Point;
 
@@ -49,9 +49,9 @@ public class drawMap : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length ; iii++)
                 {
 
                     //create colours of texture based on the height of the noise
@@ -85,6 +85,15 @@ public class drawMap : MonoBehaviour
 
         //apply the texture calls
         texture.Apply();
+
+        byte[] bytes = texture.EncodeToPNG();
+        var dirPath = Application.dataPath + "/RenderOutput";
+        if (!System.IO.Directory.Exists(dirPath))
+        {
+            System.IO.Directory.CreateDirectory(dirPath);
+        }
+        System.IO.File.WriteAllBytes(dirPath + "/R_" + Random.Range(0, 100000) + ".png", bytes);
+        Debug.Log(bytes.Length / 1024 + "Kb was saved as: " + dirPath);
 
         return texture;
     }

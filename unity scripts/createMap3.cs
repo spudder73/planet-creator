@@ -19,23 +19,45 @@ public class createMap3 : MonoBehaviour
                 {
                     int xRem = ii % dist;
                     int yRem = iii % dist;
-                    int xRem2 = dist - xRem;
-                    int yRem2 = dist - yRem;
+                    int xRem2 = dist - xRem + 1;
+                    int yRem2 = dist - yRem + 1;
+
+                    if (ii+xRem2 > length * 4 - 1)
+                    {
+                        xRem2 -= length * 4 - 1;
+                    }
+
+                    if (iii + yRem2 > length * 3 -1)
+                    {
+                        yRem2 -= length * 3 - 1;
+                    }
+
+                    if (ii + xRem2 > length * 2 - 1 && iii < length + 1)
+                    {
+                        xRem2 -= length - 1;
+                    }
+
+                    if (ii + xRem2 > length * 2 - 1 && iii > length * 2 + 1)
+                    {
+                        xRem2 -= length - 1;
+                    }
+
+
                     //assign distance to top left
-                    map3[ii, iii, 0, 0] = map1[ii - xRem, iii - yRem, 0];
-                    map3[ii, iii, 0, 1] = map1[ii - xRem, iii - yRem, 1];
+                    map3[ii, iii, 0, 0] = map1[ii - xRem , iii + yRem2, 0];
+                    map3[ii, iii, 0, 1] = map1[ii - xRem , iii + yRem2, 1];
 
                     //assign distance to top right
-                    map3[ii, iii, 1, 0] = map1[ii + xRem2, iii - yRem, 0];
-                    map3[ii, iii, 1, 1] = map1[ii + xRem2, iii - yRem, 1];
+                    map3[ii, iii, 1, 0] = map1[ii + xRem2, iii + yRem2, 0];
+                    map3[ii, iii, 1, 1] = map1[ii + xRem2, iii + yRem2, 1];
                    
                     //assign distance to bottom left
-                    map3[ii, iii, 2, 0] = map1[ii - xRem, iii + yRem2, 0];
-                    map3[ii, iii, 2, 1] = map1[ii - xRem, iii + yRem2, 1];
+                    map3[ii, iii, 2, 0] = map1[ii - xRem , iii - yRem, 0];
+                    map3[ii, iii, 2, 1] = map1[ii - xRem , iii - yRem, 1];
 
                     //assign distance to bottom right
-                    map3[ii, iii, 3, 0] = map1[ii + xRem2, iii + yRem2, 0];
-                    map3[ii, iii, 3, 1] = map1[ii + xRem2, iii + yRem2, 1];
+                    map3[ii, iii, 3, 0] = map1[ii + xRem2, iii - yRem, 0];
+                    map3[ii, iii, 3, 1] = map1[ii + xRem2, iii - yRem, 1];
                 }
             }
         }

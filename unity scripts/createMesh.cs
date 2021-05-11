@@ -7,10 +7,10 @@ public class createMesh : MonoBehaviour
     bool check;
     bool check1;
 
-    public noiseEditor get;
-    public drawOcean get2;
-    public drawMap get3;
-    public formMeshes get4;
+    public noiseEditor noiseEditor;
+    public drawOcean drawOcean;
+    public drawMap drawMap;
+    public formMeshes formMeshes;
 
     public GameObject gameObject1;
     public GameObject gameObject2;
@@ -21,10 +21,10 @@ public class createMesh : MonoBehaviour
     {
         check = false;
         check1 = false;
-        get = gameObject.GetComponent<noiseEditor>();
-        get2 = gameObject.GetComponent<drawOcean>();
-        get3 = gameObject.GetComponent<drawMap>();
-        get4 = gameObject.GetComponent<formMeshes>();
+        noiseEditor = gameObject.GetComponent<noiseEditor>();
+        drawOcean = gameObject.GetComponent<drawOcean>();
+        drawMap = gameObject.GetComponent<drawMap>();
+        formMeshes = gameObject.GetComponent<formMeshes>();
     }
 
 
@@ -33,7 +33,7 @@ public class createMesh : MonoBehaviour
 
         if (scale)
         {
-            scaler1 = get.getScaler();
+            scaler1 = noiseEditor.getScaler();
 
             gameObject1.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
 
@@ -50,9 +50,9 @@ public class createMesh : MonoBehaviour
             //doesnt work in start
             gameObject1 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
 
-            scaler1 = get.getScaler(); // forgot to add so nothing appeared
+            scaler1 = noiseEditor.getScaler(); // forgot to add so nothing appeared
 
-            Mesh mesh1 = get4.createPlanet(length, map, amplitude, meshHeightCurve, startingPos);
+            Mesh mesh1 = formMeshes.createPlanet(length, map, amplitude, meshHeightCurve, startingPos);
             gameObject1.GetComponent<MeshFilter>().mesh = mesh1;
             gameObject1.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
 
@@ -75,14 +75,12 @@ public class createMesh : MonoBehaviour
 
         Material material = Resources.Load("mat", typeof(Material)) as Material;
 
-        Texture2D texture1 = new Texture2D(length, length);
+        Texture2D texture1 = new Texture2D(length*4, length*3);
 
-        texture1 = get3.draw(length, map, meshHeightCurve, startingPos);
+        texture1 = drawMap.draw(length, map, meshHeightCurve, startingPos);
 
         gameObject1.GetComponent<Renderer>().material = material;
         gameObject1.GetComponent<Renderer>().material.SetTexture("_MainTex", texture1);
-
-
     }
 
 
@@ -97,7 +95,7 @@ public class createMesh : MonoBehaviour
 
         if (scale)
         {
-            scaler1 = get.getH1() * 1.5f;
+            scaler1 = noiseEditor.getH1() * 1.5f;
 
             gameObject2.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
 
@@ -113,9 +111,9 @@ public class createMesh : MonoBehaviour
 
             gameObject2 = new GameObject("Mesh", typeof(MeshFilter), typeof(MeshRenderer));
 
-            scaler1 = get.getH1() * 1.5f;
+            scaler1 = noiseEditor.getH1() * 1.5f;
 
-            Mesh mesh2 = get4.createOcean(length, map, amplitude, meshHeightCurve, startingPos);
+            Mesh mesh2 = formMeshes.createOcean(length, map, amplitude, meshHeightCurve, startingPos);
             gameObject2.GetComponent<MeshFilter>().mesh = mesh2;
 
             gameObject2.transform.localScale = new Vector3(scaler1 * 10, scaler1 * 10, scaler1 * 10);
@@ -123,7 +121,7 @@ public class createMesh : MonoBehaviour
             gameObject2.transform.Rotate(180, 0, 0);
             gameObject2.transform.position = new Vector3(0, 0, 0);
 
-            scaler1 *= get.getH1() * 1.5f;
+            scaler1 *= noiseEditor.getH1() * 1.5f;
 
             check = true;
         }
@@ -136,9 +134,9 @@ public class createMesh : MonoBehaviour
         
         Material material = Resources.Load("ocean1", typeof(Material)) as Material;
 
-        Texture2D texture2 = new Texture2D(length, length);
+        Texture2D texture2 = new Texture2D(length * 4, length * 3);
 
-        texture2 = get2.draw(length, map, meshHeightCurve, startingPos);
+        texture2 = drawOcean.draw(length, map, meshHeightCurve, startingPos);
 
         gameObject2.GetComponent<Renderer>().material = material;
         gameObject2.GetComponent<Renderer>().material.SetTexture("_MainTex", texture2);

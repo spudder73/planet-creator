@@ -26,9 +26,9 @@ public class createMap4 : MonoBehaviour
                     {
                         for (int v = 0; v < 2; v++)
                         {
-                            gradient[v] = map3[ii, iii, iv, iv];
-
-                            direction[v] = map2[ii, iii, iv, iv];
+                            gradient[v] = map3[ii, iii, iv, v];
+                            
+                            direction[v] = map2[ii, iii, iv, v];
                         }
 
                         map4[ii, iii, iv] = (gradient[0] * direction[0] + gradient[1] * direction[1]);

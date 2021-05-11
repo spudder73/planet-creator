@@ -49,7 +49,6 @@ public class noiseEditor : MonoBehaviour
     int length;
 
     Color[] colours;
-
     float[] heights;
     newAssignMap newAssignMap;
 
@@ -57,7 +56,7 @@ public class noiseEditor : MonoBehaviour
     void Start()
     {
         newAssignMap = gameObject.GetComponent<newAssignMap>();
-
+        int temp = 1;
         a2Val = 0;
         heights = new float[5];
         colours = new Color[5];
@@ -65,7 +64,7 @@ public class noiseEditor : MonoBehaviour
         modify = false;
         apply = false;
         height = 0f;
-        gridSize = 10;
+        gridSize = 100;
         frequency = 2;
         frequency2 = 2;
         octaves = 1;
@@ -103,9 +102,17 @@ public class noiseEditor : MonoBehaviour
         colours[4].b = 1;
         colours[4].a = 1;
 
+        gridSize--;
+        while (temp != 0)
+        {
+            gridSize++;
+            temp = (gridSize) % frequency;
+        }
 
-        dist = (int)((gridSize - frequency * 2) / frequency);
-        length = dist * frequency + 2;
+        
+
+        dist = (int)((gridSize) / frequency);
+        length = gridSize;
 
     }
 
@@ -268,7 +275,15 @@ public class noiseEditor : MonoBehaviour
         newAssignMap.changeM(height, length, amplitude, scale);
     }
 
+    public int getLength()
+    {
+        return length;
+    }
 
+    public int getDist()
+    {
+        return dist;
+    }
 
     public float getH1()
     {

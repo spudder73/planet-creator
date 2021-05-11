@@ -71,8 +71,8 @@ public class newAssignMap : MonoBehaviour
         startVal = 0.7f;
         height2 = 0;
 
-        dist = (int)((grid - freq*2) / freq);
-        length = dist * freq + 2;
+        dist = noiseEditor.getDist();
+        length = noiseEditor.getLength();
 
         finalMap = new float[length * 4, length * 3];
         mapOctaves = new float[octaves, length * 4, length * 3];
@@ -86,7 +86,6 @@ public class newAssignMap : MonoBehaviour
         finalMap = new float[length * 4, length * 3];
 
         startingPos = new int[,] { { length, 0 }, { 0, length }, { length, length }, { length * 2, length }, { length * 3, length }, { length, length * 2 } };
-
         freq3 = (int)(frequency2 * (Mathf.Pow(2, octaves - 1))); 
 
         recreateNoise();
@@ -120,7 +119,7 @@ public class newAssignMap : MonoBehaviour
             {
                 freq = noiseEditor.getFrequency();
 
-                map1 = createMap1.addPoints(length, dist, startingPos);
+                map1 = createMap1.addPoints(length, dist, startingPos, meshHeightCurve);
                 map2 = createMap2.setDistances(length, dist, startingPos);
                 map3 = createMap3.getRandVectors(length, dist, map1, startingPos);
                 map4 = createMap4.dotProduct(length, dist, map2, map3, startingPos);
@@ -274,7 +273,7 @@ public class newAssignMap : MonoBehaviour
     {
         freq = freq3; // fixed big borders
 
-        createMesh.createMeshes(length1, finalMap, amplitude1, meshHeightCurve, scale1, false, startingPos);
+        createMesh.createMeshes(length1, map5, amplitude1, meshHeightCurve, scale1, false, startingPos);
         createMesh.createOcean(length1, finalMap, amplitude1, meshHeightCurve, scale1, false, startingPos);
         createMesh.addOceanMaterial(length1, finalMap, amplitude1, meshHeightCurve, scale1, startingPos);
 

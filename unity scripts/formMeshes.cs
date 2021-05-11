@@ -18,10 +18,10 @@ public class formMeshes : MonoBehaviour
         Vector2[] uvsFlat;
         Mesh mesh = new Mesh();
 
-        triangles = new int[6 * (length) * (length) * 2 * 6];
-        vertices = new Vector3[(length + 2) * (length + 2) * 2 * 6];
-        uvs = new Vector2[(length +2) * (length+2) * 6];
-        heightMap = new float[(length + 2) * (length + 2) * 2 * 6];
+        triangles = new int[(length) * 3 * (length) * 4 * 2 * 10];
+        vertices = new Vector3[((length + 2) * 3) * ((length) * 4)];
+        uvs = new Vector2[((length) * 3) * ((length) * 4)];
+        heightMap = new float[((length) * 3) * ((length) * 4)];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -63,9 +63,9 @@ public class formMeshes : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length; iii++)
                 {
                     vertices[vertCounter] = new Vector3(ii, length, iii);
 
@@ -97,13 +97,13 @@ public class formMeshes : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length; iii++)
                 {
                     if (ii < x + length & iii < y + length) // ? +2
                     {
-                        createQuad2(vertCounter2, vertCounter2 + length + 2, vertCounter2 + length + 3, vertCounter2 + 1);
+                        createQuad2(vertCounter2, vertCounter2 + length , vertCounter2 + length + 1, vertCounter2 + 1);
                     }
                     vertCounter2++;
                 }
@@ -128,7 +128,7 @@ public class formMeshes : MonoBehaviour
         }
 
 
-        flatShade();
+        //flatShade();
 
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
@@ -155,11 +155,10 @@ public class formMeshes : MonoBehaviour
         Mesh mesh1 = new Mesh();
 
 
-        triangles1 = new int[6 * (length) * (length)];
-        vertices1 = new Vector3[(length + 2) * (length + 2)];
-        uvs1 = new Vector2[(length + 2) * (length + 2)];
-
-        heightMap = new float[(length + 2) * (length + 2)];
+        triangles1 = new int[3 * 4 * 2 * (length) * (length) * 10];
+        vertices1 = new Vector3[((length) * 3) * ((length) * 4)];
+        uvs1 = new Vector2[((length) * 3) * ((length) * 4)];
+        heightMap = new float[((length) * 3) * ((length) * 4)];
 
         void createQuad(int bl, int tl, int tr, int br)
         {
@@ -200,12 +199,11 @@ public class formMeshes : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length ; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length; iii++)
                 {
                     vertices1[vertCounter] = new Vector3(ii, length, iii);
-
                     uvs1[vertCounter] = new Vector2((ii) / (float)length, iii / (float)length);
                     heightMap[vertCounter] = ((float)amplitude / 10f) * ((heightCurve.Evaluate(map[ii, iii]) + 1) / 2f);
 
@@ -232,13 +230,13 @@ public class formMeshes : MonoBehaviour
             int x = startingPos[i, 0];
             int y = startingPos[i, 1];
 
-            for (int ii = x; ii < x + length + 2; ii++)
+            for (int ii = x; ii < x + length; ii++)
             {
-                for (int iii = y; iii < y + length + 2; iii++)
+                for (int iii = y; iii < y + length ; iii++)
                 {
                     if (ii < x + length & iii < y + length) // ? +2
                     {
-                        createQuad2(vertCounter2, vertCounter2 + length + 2, vertCounter2 + length + 3, vertCounter2 + 1);
+                        createQuad2(vertCounter2, vertCounter2 + length, vertCounter2 + length + 1, vertCounter2 + 1);
                     }
                     vertCounter2++;
                 }
