@@ -31,7 +31,7 @@ public class createMap4 : MonoBehaviour
                             direction[v] = map2[ii, iii, iv, v];
                         }
 
-                        map4[ii, iii, iv] = (gradient[0] * direction[0] + gradient[1] * direction[1]);
+                        map4[ii, iii, iv] = (gradient[1] * direction[0] + gradient[0] * direction[1]);
                     }
                 }
             }

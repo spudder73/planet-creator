@@ -55,7 +55,7 @@ public class drawMap : MonoBehaviour
                 {
 
                     //create colours of texture based on the height of the noise
-
+                    map[ii, iii] = (map[ii, iii]+1) / 2f;
 
                     if (heightCurve.Evaluate(map[ii, iii]) > h2)
                     {
@@ -79,6 +79,9 @@ public class drawMap : MonoBehaviour
 
                     //set the pixel of the texture to colour created
                     texture.SetPixel(ii, iii, newColour);
+
+                    
+
                 }
             }
         }

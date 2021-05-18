@@ -67,7 +67,7 @@ public class noiseEditor : MonoBehaviour
         gridSize = 100;
         frequency = 2;
         frequency2 = 2;
-        octaves = 1;
+        octaves = 5;
         amplitude = 3f;
         persistance = 0.5f;
         scale = 1f;
@@ -106,9 +106,9 @@ public class noiseEditor : MonoBehaviour
         while (temp != 0)
         {
             gridSize++;
-            temp = (gridSize) % frequency;
+            temp = (gridSize) % (frequency * (int)(Mathf.Pow(2,5)));
         }
-
+        Debug.Log(gridSize);
         
 
         dist = (int)((gridSize) / frequency);

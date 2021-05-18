@@ -15,7 +15,7 @@ public class createMap5 : MonoBehaviour
         {
             float newNum = 6 * Mathf.Pow(num, 5) - 15 * Mathf.Pow(num, 4) + 10 * Mathf.Pow(num, 3);
 
-            return num;
+            return newNum;
         }
 
 
@@ -42,11 +42,11 @@ public class createMap5 : MonoBehaviour
                     //add to the map
                     if (mode)
                     {
-                        map5[ii, iii] = 0.5f * ((Mathf.Abs(total)));
+                        map5[ii, iii] = 4 * (((total)));
                     }
                     else
                     {
-                        map5[ii, iii] = (1f - (0.5f *  Mathf.Abs(total)));
+                        map5[ii, iii] = (1f - (4f *  Mathf.Abs(total)));
                     }
 
                 }
